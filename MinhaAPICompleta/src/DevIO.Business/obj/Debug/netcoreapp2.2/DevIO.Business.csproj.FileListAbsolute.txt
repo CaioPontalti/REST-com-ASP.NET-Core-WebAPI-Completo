@@ -1,0 +1,8 @@
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\bin\Debug\netcoreapp2.2\DevIO.Business.deps.json
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\bin\Debug\netcoreapp2.2\DevIO.Business.dll
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\bin\Debug\netcoreapp2.2\DevIO.Business.pdb
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\obj\Debug\netcoreapp2.2\DevIO.Business.csprojAssemblyReference.cache
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\obj\Debug\netcoreapp2.2\DevIO.Business.AssemblyInfoInputs.cache
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\obj\Debug\netcoreapp2.2\DevIO.Business.AssemblyInfo.cs
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\obj\Debug\netcoreapp2.2\DevIO.Business.dll
+C:\Users\calmeida\source\repos\REST com ASP.NET Core WebAPI - Completo\MinhaAPICompleta\src\DevIO.Business\obj\Debug\netcoreapp2.2\DevIO.Business.pdb
