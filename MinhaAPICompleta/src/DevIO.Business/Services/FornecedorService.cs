@@ -22,8 +22,8 @@ namespace DevIO.Business.Services
 
         public async Task<bool> Adicionar(Fornecedor fornecedor)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor) 
-                || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return false;
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor) //validações na classe FornecedorValidation
+                || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return false; //validações na classe EnderecoValidation
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento).Result.Any())
             {
@@ -37,7 +37,7 @@ namespace DevIO.Business.Services
 
         public async Task<bool> Atualizar(Fornecedor fornecedor)
         {
-            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return false;
+            if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return false; //validações na classe FornecedorValidation
 
             if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result.Any())
             {
