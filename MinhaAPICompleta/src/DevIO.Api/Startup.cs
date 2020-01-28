@@ -37,6 +37,12 @@ namespace DevIO.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                //desabilita o retorno automatico da validação da model, para personalizar as msgs de retorno de erro no response.
+                opt.SuppressModelStateInvalidFilter = true; 
+            });
+
             services.ResolveDependencies();
         }
 

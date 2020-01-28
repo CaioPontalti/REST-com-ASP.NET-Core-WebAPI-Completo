@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace DevIO.Business.Models
 {
@@ -14,6 +15,7 @@ namespace DevIO.Business.Models
         public string Estado { get; set; }
 
         /* EF Relation */
+        [IgnoreDataMember] //não gera no json do response para não entrar em loop
         public Fornecedor Fornecedor { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace DevIO.Api.ViewModels
 
         public string Complemento { get; set; }
 
+        [StringLength(8, ErrorMessage = "O campo {0} precisa ter {1} caracteres", MinimumLength = 8)]
         public string Cep { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -35,6 +36,6 @@ namespace DevIO.Api.ViewModels
         [StringLength(20, ErrorMessage = "O campo {0} precisa ter entre {2 e {1} caracteres}", MinimumLength = 2)]
         public string Estado { get; set; }
 
-        public Guid Fornecedor { get; set; }
+        public Guid FornecedorId { get; set; }
     }
 }
