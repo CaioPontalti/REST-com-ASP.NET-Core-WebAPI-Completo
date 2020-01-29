@@ -26,7 +26,6 @@ namespace DevIO.Api.Configuration
 
             services.AddScoped<INotificador, Notificador>();
 
-
             return services;
         }
     }
