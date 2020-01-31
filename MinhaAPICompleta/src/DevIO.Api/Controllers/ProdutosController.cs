@@ -17,11 +17,15 @@ namespace DevIO.Api.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IProdutoService _produtoService;
+        private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IMapper _mapper;
 
-        public ProdutosController(IProdutoRepository produtoRepository, IMapper mapper, INotificador notificador) : base(notificador)
+        public ProdutosController(IProdutoRepository produtoRepository, IMapper mapper, IProdutoService produtoService, IFornecedorRepository fornecedorRepository,
+                                  INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
+            _produtoService = produtoService;
+            _fornecedorRepository = fornecedorRepository;
             _mapper = mapper;
         }
 
@@ -98,6 +102,37 @@ namespace DevIO.Api.Controllers
         public async Task<ActionResult> AdicionarImagem(IFormFile file, [FromForm] string nome)//recebe via form-data
         {
             return Ok( await Task.FromResult(file) );
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Atualizar(Guid id, ProdutoViewModel produtoViewModel) 
+        { 
+            if(id != produtoViewModel.Id) 
+            {
+                //ModelState.AddModelError(string.Empty, "Os Ids informados são diferentes");
+                NotificarErro("Os Ids informados são diferentes");
+                return CustomResponse();
+            }
+
+            var produtoAtualizacao = await _produtoRepository.ObterPorId(id);
+            produtoViewModel.Imagem = produtoAtualizacao.Imagem;
+            
+            if (!ModelState.IsValid) return BadRequest();
+
+            if (!string.IsNullOrEmpty(produtoViewModel.ImagemUpload))
+            {
+                if (!UploadArquivo(produtoViewModel.ImagemUpload, produtoViewModel.Imagem))
+                    return CustomResponse(produtoViewModel);
+            }
+
+            produtoAtualizacao.Nome = produtoViewModel.Nome;
+            produtoAtualizacao.Descricao = produtoViewModel.Descricao;
+            produtoAtualizacao.Valor = produtoViewModel.Valor;
+            produtoAtualizacao.Ativo = produtoViewModel.Ativo;
+
+            await _produtoService.Atualizar(_mapper.Map<Produto>(produtoAtualizacao));
+
+            return CustomResponse(produtoAtualizacao);
         }
 
         private bool UploadArquivo(string arquivo, string imgNome)

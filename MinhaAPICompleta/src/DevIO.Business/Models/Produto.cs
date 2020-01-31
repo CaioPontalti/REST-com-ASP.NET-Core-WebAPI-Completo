@@ -14,6 +14,6 @@ namespace DevIO.Business.Models
         public bool Ativo { get; set; }
 
         /* EF Relations */
-        public Fornecedor Fornecedor { get; set; }
+        public virtual Fornecedor Fornecedor { get; set; }
     }
 }
