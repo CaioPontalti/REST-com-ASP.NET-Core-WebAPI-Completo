@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevIO.Api.ViewModels
 {
-    [ModelBinder(typeof(JsonWithFilesFormDataModelBinder), Name = "produto")]
+    [ModelBinder(typeof(JsonWithFilesFormDataModelBinder), Name = "produto")]//recebe o produto via json, no form-data na Key produto
     public class ProdutoViewModelAlternativo
     {
         public Guid Id { get; set; }

@@ -33,6 +33,10 @@ namespace DevIO.Api
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConn"));
             });
 
+            //Add as configurações do Identity
+            services.AddIdentityConfiguration(Configuration);
+
+            //Add as configurações do AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -53,6 +57,7 @@ namespace DevIO.Api
                                           .AllowCredentials());
             });
 
+            //Add para reseolver as injeções de dependencia
             services.ResolveDependencies();
         }
 
@@ -67,6 +72,9 @@ namespace DevIO.Api
             app.UseCors("Development");
             
             app.UseHttpsRedirection();
+
+            //Sempre antes da configuração do MVC.
+            app.UseAuthentication();
 
             app.UseMvc();
         }
