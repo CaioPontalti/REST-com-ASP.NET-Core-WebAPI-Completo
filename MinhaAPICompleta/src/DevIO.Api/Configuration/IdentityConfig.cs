@@ -53,7 +53,8 @@ namespace DevIO.Api.Configuration
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
+                    ValidIssuer = appSettings.Emissor,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
