@@ -39,7 +39,7 @@ namespace DevIO.Api.Controllers
             if (result.Succeeded)
             {
                 //Faz o login do usuário se o cadastro ocorrer com sucesso.
-                await _signInManager.SignInAsync(user, false); //persiste=false => Para lembrar o usuário no próximo login. Padrão: false
+                await _signInManager.SignInAsync(user, false); //persiste=false => Para lembrar o usuário no próximo login. Padrão: false (Não se aplica para API)
                 return CustomResponse(registerViewModel);
             }
 
@@ -55,7 +55,7 @@ namespace DevIO.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            //persiste=false => Para lembrar o usuário no próximo login. Padrão: false
+            //persiste=false => Para lembrar o usuário no próximo login. Padrão: false (Não se aplica para API)
             //lockoutOnFailUre=true => Bloqueia o usuário depois de "x" tentativas inválidas.
             var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, true);
 
