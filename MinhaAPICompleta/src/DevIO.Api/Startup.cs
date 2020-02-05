@@ -57,7 +57,7 @@ namespace DevIO.Api
                                           .AllowCredentials());
             });
 
-            //Add para reseolver as injeções de dependencia
+            //Add para resolver as injeções de dependencia
             services.ResolveDependencies();
         }
 

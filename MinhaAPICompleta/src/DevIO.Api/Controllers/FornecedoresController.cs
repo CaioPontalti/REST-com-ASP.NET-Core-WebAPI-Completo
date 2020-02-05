@@ -22,10 +22,9 @@ namespace DevIO.Api.Controllers
         private readonly IFornecedorService _fornecedorService;
         private readonly IEnderecoRepository _enderecoRepository;
 
-
         public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper, IFornecedorService fornecedorService,
-                                      IEnderecoRepository enderecoRepository,INotificador notificador) : base(notificador) //MainController implementa no ctor o INotificador, aqui ele
-                                                                                    // implementa o INotificador e repassa para a classe base
+                                      IEnderecoRepository enderecoRepository, INotificador notificador, IUser appUser) : base(notificador, appUser) //MainController implementa no ctor o INotificador e IUser, aqui ele
+                                                                                                                      // implementa o INotificador e IUser e repassa para a classe base
         {
             _fornecedorRepository = fornecedorRepository;
             _mapper = mapper;
@@ -62,6 +61,10 @@ namespace DevIO.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<FornecedorViewModel>> AdicionarFornecedor(FornecedorViewModel fornecedorViewModel) 
         {
+            //teste utilizando o IUser.
+            if (!AppUser.IsAuthenticated())
+                return BadRequest();
+
             //validações feitas na própria classe FornecedorViewModel
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

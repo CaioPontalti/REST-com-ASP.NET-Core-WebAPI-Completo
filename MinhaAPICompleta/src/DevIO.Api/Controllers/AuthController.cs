@@ -24,7 +24,7 @@ namespace DevIO.Api.Controllers
         private readonly AppSettings _appSettings;
 
         public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, 
-                              IOptions<AppSettings> appSettings ,INotificador notificador) : base (notificador)
+                              IOptions<AppSettings> appSettings ,INotificador notificador, IUser appUser) : base (notificador, appUser)
         {
             _signInManager = signInManager;
             _userManager = userManager;
