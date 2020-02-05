@@ -83,7 +83,7 @@ namespace DevIO.Api.Controllers
             return CustomResponse(login);
         }
 
-        private async Task<string> GerarToken(string email)
+        private async Task<LoginResponseViewModel> GerarToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -115,7 +115,23 @@ namespace DevIO.Api.Controllers
             });
 
             var encodedToken = tokenHandler.WriteToken(token);
-            return encodedToken;
+
+            /* Se for retornar apenas o token, retornar apenas o encodedToken 
+               return encodedToken */
+
+            var response = new LoginResponseViewModel
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = Convert.ToInt64(TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds),
+                UserToken = new UserTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                }
+            };
+
+            return response;
         }
 
         //Metodo padrão 
