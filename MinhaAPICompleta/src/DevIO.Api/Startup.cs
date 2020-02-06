@@ -52,7 +52,7 @@ namespace DevIO.Api
             //Configura o versionamento da API
             services.AddVersionedApiExplorer(opt => {
                 opt.GroupNameFormat = "'v'VVV"; //v = Versão, VVV = V versão maior, V versão menor, V Patch
-                opt.SubstituteApiVersionInUrl = true; //Subs na url a versão padrão da API
+                opt.SubstituteApiVersionInUrl = true; //Substitui na url a versão padrão da API
             });
 
             //desabilita o retorno automatico da validação da model, para personalizar as msgs de retorno de erro no response.
