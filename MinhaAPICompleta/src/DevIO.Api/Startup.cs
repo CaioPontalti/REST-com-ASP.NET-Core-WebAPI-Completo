@@ -33,7 +33,7 @@ namespace DevIO.Api
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConn"));
             });
 
-            //Add as configurações do Identity
+            //Add as configurações do Identity e do JWT
             services.AddIdentityConfiguration(Configuration);
 
             //Add as configurações do AutoMapper
@@ -41,9 +41,23 @@ namespace DevIO.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //Configura o versionamento da API
+            services.AddApiVersioning(opt =>
+            {
+                opt.AssumeDefaultVersionWhenUnspecified = true; //Assume a versão padrão quando não for passado versão.
+                opt.DefaultApiVersion = new ApiVersion(1,0); // Versão Default
+                opt.ReportApiVersions = true; // informa se a versão da API está obsoleta.
+            });
+
+            //Configura o versionamento da API
+            services.AddVersionedApiExplorer(opt => {
+                opt.GroupNameFormat = "'v'VVV"; //v = Versão, VVV = V versão maior, V versão menor, V Patch
+                opt.SubstituteApiVersionInUrl = true; //Subs na url a versão padrão da API
+            });
+
+            //desabilita o retorno automatico da validação da model, para personalizar as msgs de retorno de erro no response.
             services.Configure<ApiBehaviorOptions>(opt =>
             {
-                //desabilita o retorno automatico da validação da model, para personalizar as msgs de retorno de erro no response.
                 opt.SuppressModelStateInvalidFilter = true; 
             });
 

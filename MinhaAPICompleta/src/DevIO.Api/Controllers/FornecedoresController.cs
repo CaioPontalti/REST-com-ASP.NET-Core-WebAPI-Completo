@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevIO.Api.Controllers
 {
-    //[Route("api/[controller]")]
+    //[Route("api/[controller]")] 
+    //http://localhost:50746/api/v1/fornecedores
     [Authorize]
-    [Route("api/fornecedores")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/fornecedores")]
     public class FornecedoresController : MainController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
@@ -33,6 +35,7 @@ namespace DevIO.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos() 
         {
             var fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorRepository.ObterTodos());
