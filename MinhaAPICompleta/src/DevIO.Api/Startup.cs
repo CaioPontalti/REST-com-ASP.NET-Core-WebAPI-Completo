@@ -50,11 +50,17 @@ namespace DevIO.Api
             //Para resolver os problemas de CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("Development",
+                options.AddPolicy("Development", //Ambiente
                        builder => builder.AllowAnyOrigin()
-                                          .AllowAnyMethod()
-                                          .AllowAnyHeader()
-                                          .AllowCredentials());
+                                         .AllowAnyMethod()
+                                         .AllowAnyHeader()
+                                         .AllowCredentials());
+
+                options.AddPolicy("Production", //Ambiente
+                      builder => builder.WithMethods("GET", "PUT") //Quais metodos permite
+                                        .WithOrigins("http://desenvolvedor.io", "http://teste.com") //Apenas esses dominios
+                                        .SetIsOriginAllowedToAllowWildcardSubdomains()//permite sub-dominios
+                                        .AllowAnyHeader()); //permite com qualquer Header
             });
 
             //Add para resolver as injeções de dependencia
@@ -66,11 +72,17 @@ namespace DevIO.Api
         {
             if (env.IsDevelopment())
             {
+                
+                app.UseCors("Development"); //CORS
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseCors("Production"); //CORS
+                app.UseHsts(); //Para chamada https
+            }
 
-            app.UseCors("Development");
-            
+            /* Para chamada https. Navegador guarda em cache essa informação. Redireciona o http para o https */
             app.UseHttpsRedirection();
 
             //Sempre antes da configuração do MVC.
