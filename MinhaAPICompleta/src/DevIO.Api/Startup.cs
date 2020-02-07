@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DevIO.Api.Configuration;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace DevIO.Api
 {
@@ -77,16 +72,18 @@ namespace DevIO.Api
                                         .AllowAnyHeader()); //permite com qualquer Header
             });
 
+            //Add Swagger
+            services.AddSwaggerConfig();
+
             //Add para resolver as injeções de dependencia
             services.ResolveDependencies();
         }
 
        
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
-                
                 app.UseCors("Development"); //CORS
                 app.UseDeveloperExceptionPage();
             }
@@ -103,6 +100,9 @@ namespace DevIO.Api
             app.UseAuthentication();
 
             app.UseMvc();
+
+            //Use Swagger. provider recebido no parametro do Configure.
+            app.UseSwaggerConfig(provider);
         }
     }
 }

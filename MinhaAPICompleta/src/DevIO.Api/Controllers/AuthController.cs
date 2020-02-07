@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 namespace DevIO.Api.Controllers
 {
     [ApiVersion("2.0")]
-    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("1.0")]
+    //[ApiVersion("1.0", Deprecated = true)]
     [Route("api/v{version:apiVersion}")]
     public class AuthController : MainController
     {
