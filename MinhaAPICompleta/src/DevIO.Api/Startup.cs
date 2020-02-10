@@ -93,6 +93,8 @@ namespace DevIO.Api
                 app.UseHsts(); //Para chamada https
             }
 
+            app.UseMiddleware<TesteMiddleware>();
+
             /* Para chamada https. Navegador guarda em cache essa informação. Redireciona o http para o https */
             app.UseHttpsRedirection();
 

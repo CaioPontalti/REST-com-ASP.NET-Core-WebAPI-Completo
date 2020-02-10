@@ -151,4 +151,20 @@ namespace DevIO.Api.Configuration
             await _next.Invoke(context);
         }
     }
+
+    public class TesteMiddleware
+    {
+        private readonly RequestDelegate _next;
+        public TesteMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            var teste = context.Request;
+
+            await _next.Invoke(context);
+        }
+    }
 }
