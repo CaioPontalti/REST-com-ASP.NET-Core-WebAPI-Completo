@@ -17,7 +17,23 @@ namespace DevIO.Api.Configuration
         {
             services.AddSwaggerGen(s =>
             {
-                s.OperationFilter<SwaggerDefaultvalues>();
+                s.OperationFilter<SwaggerDefaultValues>();
+
+                //Configuração para passar o token via Swagger
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { } }
+                };
+
+                s.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                s.AddSecurityRequirement(security);
             });
 
             return services;
@@ -38,7 +54,7 @@ namespace DevIO.Api.Configuration
         }
     }
 
-    public class SwaggerDefaultvalues : IOperationFilter
+    public class SwaggerDefaultValues : IOperationFilter
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {
