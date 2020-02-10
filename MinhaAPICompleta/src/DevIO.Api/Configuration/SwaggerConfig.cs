@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -41,12 +42,15 @@ namespace DevIO.Api.Configuration
 
         public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
+            // Middleware que controla o acesso ao Swagger.
+            //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
+
             app.UseSwagger();
             app.UseSwaggerUI(opt =>
             {
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    opt.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    opt.SwaggerEndpoint($"/Swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
             });
 
@@ -121,6 +125,30 @@ namespace DevIO.Api.Configuration
             }
 
             return info;
+        }
+    }
+
+
+    /* SwaggerAuthorizedMiddleware: classe criada para validar se o usuário que está chamando o Swagger está autenticado. */
+    public class SwaggerAuthorizedMiddleware 
+    {
+        private readonly RequestDelegate _next;
+
+        public SwaggerAuthorizedMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+               //verifica se na url passada tem o "swagger"
+            if (context.Request.Path.StartsWithSegments("/swagger") && !context.User.Identity.IsAuthenticated)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
+
+            await _next.Invoke(context);
         }
     }
 }
