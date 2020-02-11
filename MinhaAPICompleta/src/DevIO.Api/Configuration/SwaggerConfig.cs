@@ -129,7 +129,8 @@ namespace DevIO.Api.Configuration
     }
 
 
-    /* SwaggerAuthorizedMiddleware: classe criada para validar se o usuário que está chamando o Swagger está autenticado. */
+    /* SwaggerAuthorizedMiddleware: classe criada para validar se o usuário que está chamando o Swagger está autenticado. 
+         chamada na classe SwaggerConfig*/
     public class SwaggerAuthorizedMiddleware 
     {
         private readonly RequestDelegate _next;
