@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using DevIO.Api.Configuration;
+using DevIO.Api.Extensions;
 using DevIO.Data.Context;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -77,6 +80,12 @@ namespace DevIO.Api
 
             //Add para resolver as injeções de dependencia
             services.ResolveDependencies();
+
+            //Config HealthCheck
+            services.AddHealthChecks()
+                .AddSqlServer(Configuration.GetConnectionString("DefaultConn"), name: "SqlServer")
+                .AddCheck("Produtos", new SqlServerHealthCheck(Configuration.GetConnectionString("DefaultConn")));
+            services.AddHealthChecksUI();
         }
 
        
@@ -105,6 +114,18 @@ namespace DevIO.Api
 
             //Use Swagger. provider recebido no parametro do Configure.
             app.UseSwaggerConfig(provider);
+
+            //Use HealthCheck
+            app.UseHealthChecks("/api/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI(opt =>
+            {
+                opt.UIPath = "/api/hc-ui";
+            });
         }
     }
 }
