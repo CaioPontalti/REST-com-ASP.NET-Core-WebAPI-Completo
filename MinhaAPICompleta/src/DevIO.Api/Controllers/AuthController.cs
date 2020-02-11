@@ -3,6 +3,7 @@ using DevIO.Api.ViewModels;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -25,13 +26,15 @@ namespace DevIO.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly ILogger _logger;
 
         public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, 
-                              IOptions<AppSettings> appSettings ,INotificador notificador, IUser appUser) : base (notificador, appUser)
+                              IOptions<AppSettings> appSettings , ILogger<AuthController> logger, INotificador notificador, IUser appUser) : base (notificador, appUser)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
 
         [HttpPost("nova-conta")]
@@ -80,9 +83,15 @@ namespace DevIO.Api.Controllers
             }
 
             if (result.Succeeded)
-                return CustomResponse(await GerarToken(login.Email));
+            {
+                var token = await GerarToken(login.Email);
+                _logger.Log(LogLevel.Information, "Usuário logou no sistema");
+                return CustomResponse(token);
+            }
+                
 
             NotificarErro("Usuário ou Senha inválidas.");
+            _logger.LogError("Usuário errou a senha");
             return CustomResponse(login);
         }
 
